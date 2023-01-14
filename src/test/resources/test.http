@@ -1,0 +1,43 @@
+POST {{host}}/update
+Content-Type: application/json
+
+{
+  "applicationId": 3,
+  "type": "oa",
+  "notifyTime": "2022-08-15"
+}
+
+###
+POST {{host}}/application
+Content-Type: application/json
+
+{
+  "companyName": "Tiktok",
+  "positionName": "Lark SDE",
+  "seasonId": 1,
+  "submissionDate": "2022-08-05"
+}
+
+###
+PUT {{host}}/application
+Content-Type: application/json
+
+{
+  "applicationId": 3,
+  "status": "rejected",
+  "updateDate": "2022-10-10"
+}
+
+###
+### GET request with environment variables
+GET {{host}}/application
+Accept: application/json
+
+###
+PUT {{host}}/update/complete_time
+Content-Type: application/json
+
+{
+  "updateId": 2,
+  "time": "2022-11-29"
+}

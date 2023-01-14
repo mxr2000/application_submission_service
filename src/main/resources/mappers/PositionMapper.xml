@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.virginia.cs.application_submission.mapper.PositionMapper">
+    <insert id="insertPosition" useGeneratedKeys="true" keyProperty="id">
+        insert into t_position (company_name, season_id, name)
+        values (#{company.name}, #{season.id}, #{name})
+    </insert>
+
+    <select id="queryPositionById" resultMap="positionResultMap">
+        select *
+        from t_position
+        where t_position.id = #{id}
+    </select>
+
+    <resultMap id="positionResultMap" type="edu.virginia.cs.application_submission.pojo.Position">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <association property="season" javaType="edu.virginia.cs.application_submission.pojo.Season"
+                     select="edu.virginia.cs.application_submission.mapper.SeasonMapper.querySeasonById" column="season_id"/>
+        <association property="company" javaType="edu.virginia.cs.application_submission.pojo.Company"
+                     column="company_name"
+                     select="edu.virginia.cs.application_submission.mapper.CompanyMapper.queryCompanyByName"
+        />
+    </resultMap>
+
+    <select id="queryPositionBySeasonAndNameAndCompanyName" resultMap="positionResultMap">
+        select t_position.id, t_position.name, t_position.season_id, t_position.company_name
+        from t_position
+                 join t_company on t_position.company_name = t_company.name
+        where t_position.name = #{name}
+          and t_company.name = #{companyName}
+          and t_position.season_id = #{seasonId}
+    </select>
+</mapper>

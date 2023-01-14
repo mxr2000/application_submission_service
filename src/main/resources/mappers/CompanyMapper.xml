@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.virginia.cs.application_submission.mapper.CompanyMapper">
+    <insert id="insertCompany">
+        insert into t_company (name, spec) values (#{name}, #{spec});
+    </insert>
+
+    <select id="queryCompanyByName" resultType="edu.virginia.cs.application_submission.pojo.Company">
+        select * from t_company where name = #{name}
+    </select>
+</mapper>

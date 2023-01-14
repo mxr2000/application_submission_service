@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.virginia.cs.application_submission.mapper.ApplicationMapper">
+    <select id="queryApplicationById" resultMap="applicationResultMap">
+        select *
+        from t_application
+        where id = #{id}
+    </select>
+
+
+    <resultMap id="applicationResultMap" type="edu.virginia.cs.application_submission.pojo.Application">
+        <id column="id" property="id"/>
+        <result column="submit_time" property="submissionDate"/>
+        <result column="update_time" property="updateDate"/>
+        <result column="status" property="status"/>
+        <association property="position" javaType="edu.virginia.cs.application_submission.pojo.Position"
+                     select="edu.virginia.cs.application_submission.mapper.PositionMapper.queryPositionById"
+                     column="position_id"/>
+        <collection property="updates" ofType="edu.virginia.cs.application_submission.pojo.Update"
+                    select="edu.virginia.cs.application_submission.mapper.UpdateMapper.queryUpdatesByApplicationId"
+                    column="id"/>
+    </resultMap>
+
+    <select id="queryAllApplications" resultMap="applicationResultMap">
+        select *
+        from t_application
+    </select>
+
+    <insert id="insertApplication" useGeneratedKeys="true" keyProperty="id">
+        insert into t_application (position_id, submit_time, update_time, status)
+        values (#{position.id}, #{submissionDate}, #{submissionDate}, 'submitted')
+    </insert>
+
+    <update id="updateStatus">
+        update t_application set status = #{status}, update_time = #{updateTime} where id = #{id}
+    </update>
+</mapper>
