@@ -16,11 +16,11 @@ public interface ApplicationService {
      * if position does not exist, create the position
      * @throws SeasonDoesNotExistException if season does not exist
      */
-    void createApplication(int seasonId, String companyName, String positionName, LocalDate submissionDate) throws SeasonDoesNotExistException;
+    int createApplication(int seasonId, String companyName, String positionName, LocalDate submissionDate) throws SeasonDoesNotExistException;
 
     List<Application> getAllApplications();
 
     void updateApplicationStatus(int id, LocalDate updateTime, ApplicationStatus status) throws ApplicationDoesNotExistException;
 
-
+    Application getApplicationById(int id);
 }

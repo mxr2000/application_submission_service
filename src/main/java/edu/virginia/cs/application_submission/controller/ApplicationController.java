@@ -23,9 +23,9 @@ public class ApplicationController {
     private ApplicationService applicationService;
 
     @PostMapping
-    public ResponseEntity<String> createApplication(@Valid @RequestBody CreateApplicationParams params) {
-        applicationService.createApplication(params.seasonId, params.companyName, params.positionName, params.submissionDate);
-        return ResponseEntity.ok("success");
+    public ResponseEntity<Application> createApplication(@Valid @RequestBody CreateApplicationParams params) {
+        int id = applicationService.createApplication(params.seasonId, params.companyName, params.positionName, params.submissionDate);
+        return ResponseEntity.ok(applicationService.getApplicationById(id));
     }
 
     @GetMapping

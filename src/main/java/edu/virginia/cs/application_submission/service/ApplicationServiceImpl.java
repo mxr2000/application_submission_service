@@ -26,7 +26,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final SeasonMapper seasonMapper;
 
     @Override
-    public void createApplication(int seasonId, String companyName, String positionName, LocalDate submissionDate) throws SeasonDoesNotExistException {
+    public int createApplication(int seasonId, String companyName, String positionName, LocalDate submissionDate) throws SeasonDoesNotExistException {
         Season season = seasonMapper.querySeasonById(seasonId);
         if (season == null) {
             throw new SeasonDoesNotExistException();
@@ -41,7 +41,9 @@ public class ApplicationServiceImpl implements ApplicationService {
             position = new Position(company, season, positionName);
             positionMapper.insertPosition(position);
         }
-        applicationMapper.insertApplication(new Application(position.getId(), submissionDate));
+        Application application = new Application(position.getId(), submissionDate);
+        applicationMapper.insertApplication(application);
+        return application.getId();
     }
 
     @Override
@@ -54,6 +56,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (applicationMapper.updateStatus(id, updateTime, status) != 1) {
             throw new ApplicationDoesNotExistException();
         }
+    }
+
+    @Override
+    public Application getApplicationById(int id) {
+        return applicationMapper.queryApplicationById(id);
     }
 
 
